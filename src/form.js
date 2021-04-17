@@ -72,9 +72,9 @@ const JobForm =(props)=>{
 
 
 
-    const experience1 = [{name : 'Fresher' , value:"Fresher"},{name : '1 year' , value:"1 year"},{name : '2 year' , value:"2 year"},{name : '2+ years' , value:"2+ years"}]
-    const backlogs1 = [{name : 'yes' , value:"yes"},{name : 'No' , value:"No"}]
-    const joining1 = [{name : 'yes' , value:"yes"},{name : 'No' , value:"No"}]
+    const experience1 = [{name : 'Fresher' , value:"Fresher"},{name : '1 Year' , value:"1 Year"},{name : '2 Year' , value:"2 Year"},{name : '3 Years' , value:"3 Years"},{name : '4 Years' , value:"4 Years"},{name : '5 Years' , value:"5 Years"},{name : '6 Years' , value:"6 Years"},{name : '7 Years' , value:"7 Years"},{name : '8 Years' , value:"8 Years"},{name : '9 Years' , value:"9 Years"},{name : '10 Years' , value:"10 Years"},{name : '11 Years' , value:"11 Years"},{name : '12 Years' , value:"12 Years"},{name : '13 Years' , value:"13 Years"},{name : '14 Years' , value:"14 Years"},{name : '15 Years' , value:"15 Years"},{name : '16 Years' , value:"16 Years"},{name : '17 Years' , value:"17 Years"},{name : '18 Years' , value:"18 Years"},{name : '19 Years' , value:"19 Years"},{name : '20 Years' , value:"20 Years"},{name : '20+ Years' , value:"20+ Years"}]
+    const backlogs1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
+    const joining1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
 
     const runValidations=()=>{
     //     console.log(firstName.length)
@@ -231,13 +231,13 @@ const useStyles = makeStyles((theme) => ({
                 id="demo-simple-select-outlined"
                 value={experience}
                 onChange={onChangeexperience}
-                label="Year of Experience"
+                label="Experience"
                 required="true"
                 
                 
                 >
                 <MenuItem value="">
-                    <em>Select experience</em>
+                    <em>Select year experience</em>
                 </MenuItem>
                     {
                         experience1.map((exp)=>{
