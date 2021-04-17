@@ -1,11 +1,39 @@
 import React,{useState} from 'react'
 import {
     TextField,Grid,MenuItem,InputLabel,Select,
-    FormControl,makeStyles,Radio,withStyles,Button,Card,CardContent,CardHeader} from '@material-ui/core'
+    FormControl,makeStyles,Radio,withStyles,Button,Card,CardContent,CardHeader,Typography,Link,Box} from '@material-ui/core'
 import { green } from '@material-ui/core/colors';
-import validator from 'validator';
 import FileUpload from './FileUpload'
-// import { makeStyles } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+
+
+
+function Copyright() {
+    return (
+      <Typography variant="body2" color="textSecondary" align="center">
+        {'Copyright © '}
+        <Link color="inherit" href="https://www.grssl.com/">
+          Grassroots
+        </Link>{' '}
+        {2021}
+        {'.'}
+      </Typography>
+    );
+  }
+
+const theme = createMuiTheme();
+
+theme.typography.h6 = {
+  fontSize: '1rem',
+  '@media (min-width:600px)': {
+    fontSize: '1rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '1rem',
+  },
+};
 
 
 
@@ -13,6 +41,7 @@ const JobForm =(props)=>{
     //declaring state variables for all the inputs
     const [firstName,setfirstName] = useState("")
     const [lastName,setlastName] = useState("")
+    const [email,setEmail] = useState("")
     const [Dob,setDob] = useState("")
     const [mobile,setMobile] = useState("")
     const [alternatemob,setalternateMob] = useState("")
@@ -39,6 +68,7 @@ const JobForm =(props)=>{
     const onChangebackloags =(e)=>setBacklogs(e.target.value)
     const onChangeCTC =(e)=>setCtc(e.target.value)
     const onChangejoining =(e)=>setJoining(e.target.value)
+    const onChangeEmail=(e) => setEmail(e.target.value)
 
 
 
@@ -67,6 +97,7 @@ const JobForm =(props)=>{
         setBacklogs("")
         setCtc("")
         setJoining("")
+        setEmail("")
         setErrors(false)
     }
     
@@ -78,6 +109,7 @@ const JobForm =(props)=>{
             const data ={
                 firstName,
                 lastName,
+                email,
                 Dob,
                 mobile,
                 alternatemob,
@@ -100,23 +132,73 @@ const JobForm =(props)=>{
 const useStyles = makeStyles((theme) => ({
     formControl: {
     //   margin: theme.spacing(2),
-      minWidth: 280,
+      minWidth: 200,
     //   padding : '10px 10px 10px 10px'
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
     card :{
-        maxWidth: 445,
+        maxWidth: 671,
         //display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    root1:{
+    root3:{
         display : 'flex',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    root2: {
+        height: '120vh'
+      },
+      image: {
+        backgroundImage: 'url(/jobpic.jpg)',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor:
+          theme.palette.type === 'light'
+            ? theme.palette.grey[50]
+            : theme.palette.grey[900],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      },
+      paper: {
+        margin: theme.spacing(4),
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main
+      },
+      form: {
+        width: '100%',
+        marginTop: theme.spacing(1)
+      },
+      imageWrapper: {
+        background:
+          'linear-gradient(45eg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.15))',
+        height: '120%',
+        width: '100%'
+      },
+      submit: {
+        margin: theme.spacing(3, 0, 2)
+      },
+      avatarWrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      },
+      root1: {
+        width: '100%',
+        height : '100vh',
+        '& > * + *': {
+          marginTop: theme.spacing(2),
+        },
+      },
   }));
   const GreenRadio = withStyles({
     root: {
@@ -134,10 +216,16 @@ const useStyles = makeStyles((theme) => ({
 
   
     return(<div className={classes.root1}>
+        <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={8} className={classes.image}>
+        <div className={classes.imageWrapper} />
+      </Grid>
+        
         <Card className={classes.card}>
         <CardHeader
                 title={
-                  `Please fill the Details ::  `
+                  `Please Provide Details`
                 }
               />
         <CardContent > 
@@ -147,6 +235,9 @@ const useStyles = makeStyles((theme) => ({
             </Grid>
             <Grid item xs={12} sm={12}>
             <TextField id="outlined-basic" label="Last Name" variant="outlined" value={lastName} onChange={onChangelastName} required="true" />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+            <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={onChangeEmail} required="true" />
             </Grid>
             <Grid item xs={12} sm={12}>
             <TextField id="outlined-basic" label="DOB" variant="outlined" value={Dob} onChange={onChangeDOB} required="true" />
@@ -247,6 +338,10 @@ const useStyles = makeStyles((theme) => ({
     </Grid>
     </CardContent>
     </Card>
+    </Grid>
+    <Box mt={5}>
+              <Copyright />
+    </Box>
         
     </div>)
 }
