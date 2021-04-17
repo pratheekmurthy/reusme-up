@@ -6,7 +6,7 @@ import { green } from '@material-ui/core/colors';
 import FileUpload from './FileUpload'
 import { createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import Header from './Header'
 
 
 
@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(2),
     },
     card :{
-        maxWidth: 671,
+        maxWidth: 700,
         //display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
@@ -152,38 +152,12 @@ const useStyles = makeStyles((theme) => ({
     root2: {
         height: '120vh'
       },
-      image: {
-        backgroundImage: 'url(/jobpic.jpg)',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor:
-          theme.palette.type === 'light'
-            ? theme.palette.grey[50]
-            : theme.palette.grey[900],
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      },
-      paper: {
-        margin: theme.spacing(4),
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main
-      },
+     
       form: {
         width: '100%',
         marginTop: theme.spacing(1)
       },
-      imageWrapper: {
-        background:
-          'linear-gradient(45eg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.15))',
-        height: '120%',
-        width: '100%'
-      },
+     
       submit: {
         margin: theme.spacing(3, 0, 2)
       },
@@ -194,9 +168,12 @@ const useStyles = makeStyles((theme) => ({
       },
       root1: {
         width: '100%',
-        height : '100vh',
+        height : '120vh',
         '& > * + *': {
           marginTop: theme.spacing(2),
+          display : 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
         },
       },
   }));
@@ -216,12 +193,10 @@ const useStyles = makeStyles((theme) => ({
 
   
     return(<div className={classes.root1}>
-        <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={8} className={classes.image}>
-        <div className={classes.imageWrapper} />
-      </Grid>
-        
+        <Header/>
+        <Grid container spacing={3} direction="row">
+        <Grid item xs={4} sm={4}></Grid>
+        <Grid item xs={4} sm={4}>
         <Card className={classes.card}>
         <CardHeader
                 title={
@@ -230,26 +205,26 @@ const useStyles = makeStyles((theme) => ({
               />
         <CardContent > 
       <Grid container spacing={2} direction="row">
-            <Grid item xs={12} sm={12}>
-            <TextField id="outlined-basic" label="First Name" variant="outlined" value={firstName} onChange={onChangefirstName} required="true" /> 
+            <Grid item xs={6} sm={6}>
+            <TextField id="outlined-basic" label="First Name" variant="outlined" value={firstName} onChange={onChangefirstName} required="true" fullWidth={true}/> 
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <TextField id="outlined-basic" label="Last Name" variant="outlined" value={lastName} onChange={onChangelastName} required="true" />
+            <Grid item xs={6} sm={6}>
+            <TextField id="outlined-basic" label="Last Name" variant="outlined" value={lastName} onChange={onChangelastName} required="true" fullWidth={true}/>
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={onChangeEmail} required="true" />
+            <Grid item xs={6} sm={6}>
+            <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={onChangeEmail} required="true" fullWidth={true}/>
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <TextField id="outlined-basic" label="DOB" variant="outlined" value={Dob} onChange={onChangeDOB} required="true" />
+            <Grid item xs={6} sm={6}>
+            <TextField id="outlined-basic" label="DOB" variant="outlined" value={Dob} onChange={onChangeDOB} required="true" fullWidth={true}/>
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <TextField id="outlined-basic" label="Mobile Number" variant="outlined" value={mobile} onChange={onChangemobile} required="true" />
+            <Grid item xs={6} sm={6}>
+            <TextField id="outlined-basic" label="Mobile Number" variant="outlined" value={mobile} onChange={onChangemobile} required="true" fullWidth={true}/>
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <TextField id="outlined-basic" className={classes.TextField} label="Alternate mobile" variant="outlined" value={alternatemob} onChange={onChangeAlternate_Mob} required="true" /> 
+            <Grid item xs={6} sm={6}>
+            <TextField id="outlined-basic" className={classes.TextField} label="Alternate mobile" variant="outlined" value={alternatemob} onChange={onChangeAlternate_Mob} required="true" fullWidth={true}/> 
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <FormControl variant="outlined" className={classes.formControl} required="true"  autoWidth ="true">
+            <Grid item xs={6} sm={6}>
+            <FormControl variant="outlined" className={classes.formControl} required="true"  autoWidth ="false">
             <InputLabel id="demo-simple-select-outlined-label">Experience</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
@@ -258,7 +233,7 @@ const useStyles = makeStyles((theme) => ({
                 onChange={onChangeexperience}
                 label="Year of Experience"
                 required="true"
-                // autoWidth ={false}
+                
                 
                 >
                 <MenuItem value="">
@@ -272,12 +247,12 @@ const useStyles = makeStyles((theme) => ({
                 </Select>
             </FormControl>
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="Year of Graduation" variant="outlined" value={graduation} onChange={onChangegraduation} required="true" />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Backlogs" variant="outlined" value={backlogs} onChange={onChangebackloags} required="true" fullWidth/> */}
-            <FormControl variant="outlined" className={classes.formControl} required="true"  autoWidth ={false}>
+            <FormControl variant="outlined" className={classes.formControl} required="true"  autoWidth ="false">
             <InputLabel id="demo-simple-select-outlined-label">Backlog</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
@@ -286,7 +261,7 @@ const useStyles = makeStyles((theme) => ({
                 onChange={onChangebackloags}
                 label="Backlogs"
                 required="true"
-                // autoWidth ={false}
+                autoWidth ="false"
                 
                 >
                 <MenuItem value="">
@@ -300,12 +275,12 @@ const useStyles = makeStyles((theme) => ({
                 </Select>
             </FormControl>
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="Current CTC" variant="outlined" value={ctc} onChange={onChangeCTC} required="true" />
             </Grid>
-            <Grid item xs={4} sm={12}>
+            <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Joining" variant="outlined" value={joining} onChange={onChangejoining} required="true" fullWidth/>  */}
-            <FormControl variant="outlined" className={classes.formControl} required="true"  >
+            <FormControl variant="outlined" className={classes.formControl} required="true" autoWidth={false} >
             <InputLabel id="demo-simple-select-outlined-label">Immediate Joiner</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
@@ -313,9 +288,7 @@ const useStyles = makeStyles((theme) => ({
                 value={joining}
                 onChange={onChangejoining}
                 label="Immediate Joiner"
-                // required="true"
-               
-                
+                required="true"
                 >
                 <MenuItem value="">
                     <em>Select option</em>
@@ -338,6 +311,8 @@ const useStyles = makeStyles((theme) => ({
     </Grid>
     </CardContent>
     </Card>
+    </Grid>
+    <Grid item xs={4} sm={4}></Grid>
     </Grid>
     <Box mt={5}>
               <Copyright />

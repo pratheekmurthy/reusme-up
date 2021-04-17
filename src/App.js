@@ -6,7 +6,6 @@ import Header from './Header'
 
 const App =(props)=>{
     return (<div className="App">
-        <Header/>
         <JobForm/>
     </div>)
 }
