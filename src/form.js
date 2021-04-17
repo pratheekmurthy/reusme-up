@@ -5,6 +5,9 @@ import {
 import { green } from '@material-ui/core/colors';
 import validator from 'validator';
 import FileUpload from './FileUpload'
+// import { makeStyles } from '@material-ui/core/styles';
+
+
 
 const JobForm =(props)=>{
     //declaring state variables for all the inputs
@@ -21,6 +24,7 @@ const JobForm =(props)=>{
     const [error,setErrors] = useState(false)
     
     const formerrors={}
+   
 
     //on Change functions
 
@@ -102,6 +106,17 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
+    card :{
+        maxWidth: 445,
+        //display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    root1:{
+        display : 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
   }));
   const GreenRadio = withStyles({
     root: {
@@ -118,14 +133,14 @@ const useStyles = makeStyles((theme) => ({
   const classes = useStyles();
 
   
-    return(<div>
-        <Card>
+    return(<div className={classes.root1}>
+        <Card className={classes.card}>
         <CardHeader
                 title={
                   `Please fill the Details ::  `
                 }
               />
-        <CardContent> 
+        <CardContent > 
       <Grid container spacing={2} direction="row">
             <Grid item xs={12} sm={12}>
             <TextField id="outlined-basic" label="First Name" variant="outlined" value={firstName} onChange={onChangefirstName} required="true" /> 
