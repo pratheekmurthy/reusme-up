@@ -1,14 +1,12 @@
 import React,{useState} from 'react'
 import {
     TextField,Grid,MenuItem,InputLabel,Select,
-    FormControl,makeStyles,Radio,withStyles,Button,Card,CardContent,CardHeader,Typography,Link,Box} from '@material-ui/core'
-import { green } from '@material-ui/core/colors';
+    FormControl,makeStyles,Button,Card,CardContent,CardHeader,Typography,Link,Box} from '@material-ui/core'
 import FileUpload from './FileUpload'
 import { createMuiTheme } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Header from './Header'
 import validator from 'validator'
-import { date } from 'yup';
+import axios from 'axios'
 
 
 
@@ -79,43 +77,45 @@ const JobForm =(props)=>{
 
     const runValidations=()=>{
       if(firstName.trim().length === 0){
-        errors.firstName = 'First Name cannot be blank'
+        errors.firstName = '*first Name cannot be blank'
       }
       if(lastName.trim().length === 0){
-        errors.lastName = 'Last Name cannot be blank'
+        errors.lastName = '*last Name cannot be blank'
       }
       if(email.trim().length === 0){
-        errors.email = 'Email cannot be blank'
+        errors.email = '*email cannot be blank'
       }else if(!validator.isEmail(email)) {
         errors.email = 'invalid email format'
       }
       if(Dob.trim().length === 0){
-        errors.Dob = 'DOB cannot be blank'
+        errors.Dob = '*DOB cannot be blank'
       }
       if(mobile.trim().length === 0){
-        errors.mobile = 'Mobile Number cannot be blank'
-      }else if (mobile.trim().length !=10){
-        errors.mobile = 'Invalid Mobile number'
+        errors.mobile = '*mobile number cannot be blank'
+      }else if (mobile.trim().length !== 10){
+        errors.mobile = '*Invalid Mobile number'
       }
       if(alternatemob.trim().length === 0){
-        errors.alternatemob = 'Alternate Mobile Number cannot be blank'
-      }else if (alternatemob.trim().length !=10){
-        errors.alternatemob = 'Invalid Alternate Mobile number'
+        errors.alternatemob = '*alternate Mobile Number cannot be blank'
+      }else if (alternatemob.trim().length !== 10){
+        errors.alternatemob = '*Invalid Alternate Mobile number'
+      }else if(alternatemob === mobile){
+        errors.alternatemob = '*Primary and secondary phone numbers cannot be same'
       }
       if(experience.trim().length === 0){
-        errors.experience = 'Experience cannot be blank'
+        errors.experience = '*experience cannot be blank'
       }
       if(graduation.trim().length === 0){
-        errors.graduation = 'Please select graduation year'
+        errors.graduation = '*please select graduation year'
       }
       if(backlogs.trim().length === 0){
-        errors.backlogs = 'Please select backlog status'
+        errors.backlogs = '*please select backlog status'
       }
       if(ctc.trim().length === 0){
-        errors.ctc = 'Please current CTC'
+        errors.ctc = '*please current CTC'
       }
       if(joining.trim().length === 0){
-        errors.joining = 'Please select Joining status'
+        errors.joining = '*please select Joining status'
       }
     }
 
@@ -134,14 +134,22 @@ const JobForm =(props)=>{
         setCtc("")
         setJoining("")
         setEmail("")
-        // setErrors(false)
+    }
+
+    const formSubmission =(data)=>{
+        axios.post('http://localhost:3056/api/profiles',data)
+        .then((response)=>{
+          alert("profile uploaded succesfully")
+        })
+        .catch((error)=>{
+          alert(error.message)
+        })
     }
     
     
     const handleSubmit = (e)=>{
       e.preventDefault()
         runValidations()
-        // console.log(error)
         if(Object.keys(errors).length === 0){
           setFormErrors({})
             const data ={
@@ -157,7 +165,8 @@ const JobForm =(props)=>{
                 ctc,
                 joining
             }
-            console.log(data)
+            // console.log(data)
+            formSubmission(data)
             handleReset()
           }else {
             console.log('form errors', errors)
@@ -165,22 +174,17 @@ const JobForm =(props)=>{
             
           }
     }
-
-    console.log(formErrors)
     
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
-    //   margin: theme.spacing(2),
       minWidth: 200,
-    //   padding : '10px 10px 10px 10px'
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
     card :{
         maxWidth: 700,
-        //display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -217,17 +221,7 @@ const useStyles = makeStyles((theme) => ({
         },
       },
   }));
-  const GreenRadio = withStyles({
-    root: {
-      color: green[400],
-      '&$checked': {
-        color: green[600],
-        flexGrow: 1
-        
-      },
-    },
-    checked: {},
-  })((props) => <Radio color="default" {...props} />);
+
 
   const classes = useStyles();
 
@@ -247,30 +241,30 @@ const useStyles = makeStyles((theme) => ({
       <Grid container spacing={2} direction="row">
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="First Name" variant="outlined" value={firstName} onChange={onChangefirstName} required="true" fullWidth={true} error={formErrors.firstName && <span>{formErrors.firstName}</span>}/>
-            {formErrors.firstName && <span  style={{color:'red'}}>{formErrors.firstName}</span>}
+            {formErrors.firstName && <span  style={{color:'blue'}}><i>{formErrors.firstName}</i></span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="Last Name" variant="outlined" value={lastName} onChange={onChangelastName} required="true" fullWidth={true} error={formErrors.lastName && <span>{formErrors.lastName}</span>}/>
-            {formErrors.lastName && <span  style={{color:'red'}}>{formErrors.lastName}</span>}
+            {formErrors.lastName && <span  style={{color:'blue'}}>{formErrors.lastName}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={onChangeEmail} required="true" fullWidth={true} error={formErrors.email && <span>{formErrors.email}</span>}/><br/>
-            {formErrors.email && <span style={{color:'red'}}> { formErrors.email } </span>}<br />
+            {formErrors.email && <span style={{color:'blue'}}> { formErrors.email } </span>}<br />
             </Grid>
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="DOB" variant="outlined" value={Dob} onChange={onChangeDOB} required="true" fullWidth={true} error={formErrors.Dob && <span>{formErrors.Dob}</span>}/>
-            {formErrors.Dob && <span  style={{color:'red'}}>{formErrors.Dob}</span>}
+            {formErrors.Dob && <span  style={{color:'blue'}}>{formErrors.Dob}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="Mobile Number" variant="outlined" value={mobile} onChange={onChangemobile} required="true" fullWidth={true} error={formErrors.mobile && <span>{formErrors.mobile}</span>}/>
-            {formErrors.mobile && <span  style={{color:'red'}}>{formErrors.mobile}</span>}
+            {formErrors.mobile && <span  style={{color:'blue'}}>{formErrors.mobile}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" className={classes.TextField} label="Alternate mobile" variant="outlined" value={alternatemob} onChange={onChangeAlternate_Mob} required="true" fullWidth={true} error={formErrors.alternatemob && <span>{formErrors.alternatemob}</span>}/> 
-            {formErrors.alternatemob && <span  style={{color:'red'}}>{formErrors.alternatemob}</span>}
+            {formErrors.alternatemob && <span  style={{color:'blue'}}>{formErrors.alternatemob}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
-            <FormControl variant="outlined" className={classes.formControl} required="true"  autoWidth ="false">
+            <FormControl variant="outlined" className={classes.formControl} required="true"  fullWidth={true} >
             <InputLabel id="demo-simple-select-outlined-label">Experience</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
@@ -291,14 +285,15 @@ const useStyles = makeStyles((theme) => ({
                     }
                 </Select>
             </FormControl>
+            {formErrors.experience && <span  style={{color:'blue'}}>{formErrors.experience}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField id="outlined-basic" label="Year of Graduation" variant="outlined" value={graduation} onChange={onChangegraduation} required="true" error={formErrors.graduation && <span>{formErrors.graduation}</span>}/><br/>
-            {formErrors.graduation && <span  style={{color:'red'}}>{formErrors.graduation}</span>}
+            <TextField id="outlined-basic" label="Year of Graduation" variant="outlined" value={graduation} onChange={onChangegraduation} required="true" fullWidth={true}  error={formErrors.graduation && <span>{formErrors.graduation}</span>}/><br/>
+            {formErrors.graduation && <span  style={{color:'blue'}}>{formErrors.graduation}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Backlogs" variant="outlined" value={backlogs} onChange={onChangebackloags} required="true" fullWidth/> */}
-            <FormControl variant="outlined" className={classes.formControl} required="true"  autoWidth ="false" >
+            <FormControl variant="outlined" className={classes.formControl} required="true"  fullWidth={true}  >
             <InputLabel id="demo-simple-select-outlined-label">Backlog</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
@@ -320,14 +315,15 @@ const useStyles = makeStyles((theme) => ({
                     }
                 </Select>
             </FormControl>
+            {formErrors.backlogs && <span  style={{color:'blue'}}>{formErrors.backlogs}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField id="outlined-basic" label="Current CTC" variant="outlined" value={ctc} onChange={onChangeCTC} required="true" error={formErrors.ctc && <span>{formErrors.ctc}</span>}/><br/>
-            {formErrors.ctc && <span  style={{color:'red'}}>{formErrors.ctc}</span>}
+            <TextField id="outlined-basic" label="Current CTC" variant="outlined" value={ctc} onChange={onChangeCTC} required="true" fullWidth={true}  error={formErrors.ctc && <span>{formErrors.ctc}</span>}/><br/>
+            {formErrors.ctc && <span  style={{color:'blue'}}>{formErrors.ctc}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Joining" variant="outlined" value={joining} onChange={onChangejoining} required="true" fullWidth/>  */}
-            <FormControl variant="outlined" className={classes.formControl} required="true" autoWidth={false} >
+            <FormControl variant="outlined" className={classes.formControl} required="true" fullWidth={true}  >
             <InputLabel id="demo-simple-select-outlined-label">Immediate Joiner</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
@@ -347,6 +343,7 @@ const useStyles = makeStyles((theme) => ({
                     }
                 </Select>
             </FormControl>
+            {formErrors.joining && <span  style={{color:'blue'}}>{formErrors.joining}</span>}
             </Grid>
             <Grid item xs={12} sm={12}>
             <FileUpload/>
