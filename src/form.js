@@ -50,6 +50,7 @@ const JobForm =(props)=>{
     const [backlogs,setBacklogs] = useState("")
     const [ctc,setCtc] = useState("")
     const [joining,setJoining] = useState("")
+    const [role,setRole] = useState("")
     const [formErrors, setFormErrors] = useState({})
     const errors = {}
    
@@ -68,12 +69,14 @@ const JobForm =(props)=>{
     const onChangeCTC =(e)=>setCtc(e.target.value)
     const onChangejoining =(e)=>setJoining(e.target.value)
     const onChangeEmail=(e) => setEmail(e.target.value)
+    const onChangerole=(e)=> setRole(e.target.value)
 
 
 
     const experience1 = [{name : 'Fresher' , value:"Fresher"},{name : '1 Year' , value:"1 Year"},{name : '2 Year' , value:"2 Year"},{name : '3 Years' , value:"3 Years"},{name : '4 Years' , value:"4 Years"},{name : '5 Years' , value:"5 Years"},{name : '6 Years' , value:"6 Years"},{name : '7 Years' , value:"7 Years"},{name : '8 Years' , value:"8 Years"},{name : '9 Years' , value:"9 Years"},{name : '10 Years' , value:"10 Years"},{name : '11 Years' , value:"11 Years"},{name : '12 Years' , value:"12 Years"},{name : '13 Years' , value:"13 Years"},{name : '14 Years' , value:"14 Years"},{name : '15 Years' , value:"15 Years"},{name : '16 Years' , value:"16 Years"},{name : '17 Years' , value:"17 Years"},{name : '18 Years' , value:"18 Years"},{name : '19 Years' , value:"19 Years"},{name : '20 Years' , value:"20 Years"},{name : '20+ Years' , value:"20+ Years"}]
     const backlogs1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
     const joining1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
+    const role1 = [{name : 'MERN Developer', value : 'MERN Developer'},{name : 'Manual Tester', value : 'Manual Tester'},{name : 'Automation Tester', value : 'Automation Tester'}]
 
     const runValidations=()=>{
       if(firstName.trim().length === 0){
@@ -117,6 +120,9 @@ const JobForm =(props)=>{
       if(joining.trim().length === 0){
         errors.joining = '*please select Joining status'
       }
+      if(role.trim().length === 0){
+        errors.role = '* please select role'
+      }
     }
 
    
@@ -159,11 +165,12 @@ const JobForm =(props)=>{
                 Dob,
                 mobile,
                 alternatemob,
+                role,
                 experience,
                 graduation,
                 backlogs,
                 ctc,
-                joining
+                joining,
             }
             // console.log(data)
             formSubmission(data)
@@ -320,6 +327,32 @@ const useStyles = makeStyles((theme) => ({
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="Current CTC" variant="outlined" value={ctc} onChange={onChangeCTC} required="true" fullWidth={true}  error={formErrors.ctc && <span>{formErrors.ctc}</span>}/><br/>
             {formErrors.ctc && <span  style={{color:'blue'}}>{formErrors.ctc}</span>}
+            </Grid>
+            <Grid item xs={6} sm={6}>
+            {/* <TextField id="outlined-basic" label="Backlogs" variant="outlined" value={backlogs} onChange={onChangebackloags} required="true" fullWidth/> */}
+            <FormControl variant="outlined" className={classes.formControl} required="true"  fullWidth={true}  >
+            <InputLabel id="demo-simple-select-outlined-label">Role</InputLabel>
+                <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={role}
+                onChange={onChangerole}
+                label="Role"
+                required="true"
+                autoWidth ="false"
+                
+                >
+                <MenuItem value="">
+                    <em>Select option</em>
+                </MenuItem>
+                    {
+                        role1.map((log)=>{
+                            return( <MenuItem value={log.value}>{log.name}</MenuItem>)
+                        })
+                    }
+                </Select>
+            </FormControl>
+            {formErrors.role && <span  style={{color:'blue'}}>{formErrors.role}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Joining" variant="outlined" value={joining} onChange={onChangejoining} required="true" fullWidth/>  */}

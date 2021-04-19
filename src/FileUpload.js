@@ -19,6 +19,7 @@ const FileUpload = () => {
   function uploadFile(files) {
       var formdata = new FormData();
       formdata.append("resume", files[0], `${files[0].name}`);
+      
 
       var requestOptions = {
         method: 'POST',
@@ -109,6 +110,7 @@ const FileUpload = () => {
             // axios.post('/channel/uploadfile', formData);
             // setOpen(false);
             // setSnackbarOpen(true);
+            console.log(files)
             uploadFile(files);
           }}
           showPreviews={true}
