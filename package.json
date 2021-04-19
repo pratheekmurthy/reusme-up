@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "formik": "^2.2.6",
     "formik-material-ui": "^3.0.1",
+    "fs": "*",
     "material-ui-dropzone": "^3.5.0",
     "react": "^17.0.2",
     "react-datepicker": "^3.7.0",

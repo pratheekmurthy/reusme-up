@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { DropzoneDialog } from 'material-ui-dropzone';
-import axios from 'axios';
+
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -16,26 +16,36 @@ const FileUpload = () => {
     message: ''
   });
 
-  function uploadFile(file) {
-    axios
-      .post('/channel/uploadfile', file)
-      .then(res => {
-        setOpen(false);
+  function uploadFile(files) {
+      var formdata = new FormData();
+      formdata.append("resume", files[0], `${files[0].name}`);
+
+      var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+      };
+
+      fetch("http://localhost:3056/hr-profiles/resume", requestOptions)
+        .then(response => {
+          setOpen(false);
         setSnackbarOpen(true);
         setSnackbarMessage({
           severity: 'success',
-          message: `${res.data.recordInserted} resume submitted successfully !`
+          message: ` resume submitted successfully !`
         });
-      })
-      .catch(err => {
-        console.log(err);
+        })
+        .then(result => console.log(result))
+        .catch(error => {
+          console.log(error);
         setOpen(false);
         setSnackbarMessage({
           severity: 'error',
           message: 'Something went wrong. Please try again !'
         });
         setSnackbarOpen(true);
-      });
+          console.log('error', error)
+        });
   }
 
   const handleSnackbarClose = (event, reason) => {
@@ -81,7 +91,7 @@ const FileUpload = () => {
 
         <DropzoneDialog
           acceptedFiles={[
-            '.csv, text/csv, application/vnd.ms-excel, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+           
           ]}
           cancelButtonText={'cancel'}
           submitButtonText={'submit'}
@@ -89,17 +99,17 @@ const FileUpload = () => {
           open={open}
           onClose={() => setOpen(false)}
           onSave={files => {
-            const formData = new FormData();
-
+            // const formData = new FormData();
+            // console.log(files)
             // Update the formData object
-            formData.append('file', files[0], files[0].name);
+            // formData.append('file', files[0], files[0].name);
 
             // Request made to the backend api
             // Send formData object
             // axios.post('/channel/uploadfile', formData);
             // setOpen(false);
             // setSnackbarOpen(true);
-            uploadFile(formData);
+            uploadFile(files);
           }}
           showPreviews={true}
           showFileNamesInPreview={true}
