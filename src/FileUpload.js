@@ -8,7 +8,8 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const FileUpload = () => {
+const FileUpload = (props) => {
+  const {getfileName}= props
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState({
@@ -27,8 +28,9 @@ const FileUpload = () => {
         redirect: 'follow'
       };
 
-      fetch("http://192.168.3.45:3056/hr-profiles/resume", requestOptions)
+      fetch("http://localhost:3056/hr-profiles/resume", requestOptions)
         .then(response => {
+          getfileName(response.url,files)
           setOpen(false);
         setSnackbarOpen(true);
         setSnackbarMessage({

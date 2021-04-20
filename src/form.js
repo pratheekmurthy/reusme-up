@@ -52,6 +52,7 @@ const JobForm =(props)=>{
     const [joining,setJoining] = useState("")
     const [role,setRole] = useState("")
     const [sourceIp,setIp] = useState("")
+    const [resume,setFileName] = useState("")
     const [formErrors, setFormErrors] = useState({})
     const errors = {}
    
@@ -141,6 +142,7 @@ const JobForm =(props)=>{
         setCtc("")
         setJoining("")
         setEmail("")
+        setRole("")
     }
 
     //getting possible ip
@@ -164,6 +166,15 @@ const JobForm =(props)=>{
           alert(error.message)
         })
     }
+
+
+    const getfileName =(url,name)=>{
+      // console.log(url)
+      // console.log(name)
+      // console.log(url+"/"+name[0].name)
+      
+      setFileName(name[0].name)
+    }
     
     
     const handleSubmit = (e)=>{
@@ -184,7 +195,9 @@ const JobForm =(props)=>{
                 backlogs,
                 ctc,
                 joining,
-                sourceIp
+                sourceIp,
+                resume
+
 
             }
             console.log(data)
@@ -398,7 +411,7 @@ const useStyles = makeStyles((theme) => ({
             {formErrors.joining && <span  style={{color:'blue'}}>{formErrors.joining}</span>}
             </Grid>
             <Grid item xs={12} sm={12}>
-            <FileUpload/>
+            <FileUpload getfileName={getfileName}/>
             </Grid>
             <Grid item xs={12} sm={12}>
             <Button variant="contained" color="primary" onClick={handleSubmit} >Submit</Button>
