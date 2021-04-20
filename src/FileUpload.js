@@ -27,7 +27,7 @@ const FileUpload = () => {
         redirect: 'follow'
       };
 
-      fetch("http://localhost:3056/hr-profiles/resume", requestOptions)
+      fetch("http://192.168.3.45:3056/hr-profiles/resume", requestOptions)
         .then(response => {
           setOpen(false);
         setSnackbarOpen(true);

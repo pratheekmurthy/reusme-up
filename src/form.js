@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import {
     TextField,Grid,MenuItem,InputLabel,Select,
     FormControl,makeStyles,Button,Card,CardContent,CardHeader,Typography,Link,Box} from '@material-ui/core'
@@ -51,6 +51,7 @@ const JobForm =(props)=>{
     const [ctc,setCtc] = useState("")
     const [joining,setJoining] = useState("")
     const [role,setRole] = useState("")
+    const [sourceIp,setIp] = useState("")
     const [formErrors, setFormErrors] = useState({})
     const errors = {}
    
@@ -142,8 +143,20 @@ const JobForm =(props)=>{
         setEmail("")
     }
 
+    //getting possible ip
+    const getIp =()=>{
+      axios.get(`https://api.ipify.org`)
+        .then((response)=>{
+          setIp(response.data)
+        })
+        .catch((error)=>{
+          console.log(error)
+        })
+    }
+
+    //form submission to server
     const formSubmission =(data)=>{
-        axios.post('http://localhost:3056/api/profiles',data)
+        axios.post('http://192.168.3.45:3056/api/profiles',data)
         .then((response)=>{
           alert("profile uploaded succesfully")
         })
@@ -171,8 +184,10 @@ const JobForm =(props)=>{
                 backlogs,
                 ctc,
                 joining,
+                sourceIp
+
             }
-            // console.log(data)
+            console.log(data)
             formSubmission(data)
             handleReset()
           }else {
@@ -182,6 +197,10 @@ const JobForm =(props)=>{
           }
     }
     
+    useEffect(()=>{
+      getIp()
+
+    },[])
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
