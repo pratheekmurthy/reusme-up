@@ -7,6 +7,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import Header from './Header'
 import validator from 'validator'
 import axios from 'axios'
+// import DateFnsUtils from '@date-io/date-fns';
+// import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 
 
@@ -54,6 +56,7 @@ const JobForm =(props)=>{
     const [sourceIp,setIp] = useState("")
     const [resume,setFileName] = useState("")
     const [formErrors, setFormErrors] = useState({})
+    const [disable,setDisable] = useState(true)
     const errors = {}
    
 
@@ -74,7 +77,7 @@ const JobForm =(props)=>{
     const onChangerole=(e)=> setRole(e.target.value)
 
 
-
+    // array values for dropdowns
     const experience1 = [{name : 'Fresher' , value:"Fresher"},{name : '1 Year' , value:"1 Year"},{name : '2 Year' , value:"2 Year"},{name : '3 Years' , value:"3 Years"},{name : '4 Years' , value:"4 Years"},{name : '5 Years' , value:"5 Years"},{name : '6 Years' , value:"6 Years"},{name : '7 Years' , value:"7 Years"},{name : '8 Years' , value:"8 Years"},{name : '9 Years' , value:"9 Years"},{name : '10 Years' , value:"10 Years"},{name : '11 Years' , value:"11 Years"},{name : '12 Years' , value:"12 Years"},{name : '13 Years' , value:"13 Years"},{name : '14 Years' , value:"14 Years"},{name : '15 Years' , value:"15 Years"},{name : '16 Years' , value:"16 Years"},{name : '17 Years' , value:"17 Years"},{name : '18 Years' , value:"18 Years"},{name : '19 Years' , value:"19 Years"},{name : '20 Years' , value:"20 Years"},{name : '20+ Years' , value:"20+ Years"}]
     const backlogs1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
     const joining1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
@@ -143,6 +146,7 @@ const JobForm =(props)=>{
         setJoining("")
         setEmail("")
         setRole("")
+        setDisable(false)
     }
 
     //getting possible ip
@@ -169,11 +173,8 @@ const JobForm =(props)=>{
 
 
     const getfileName =(url,name)=>{
-      // console.log(url)
-      // console.log(name)
-      // console.log(url+"/"+name[0].name)
-      
       setFileName(name[0].name)
+      setDisable(false)
     }
     
     
@@ -200,11 +201,11 @@ const JobForm =(props)=>{
 
 
             }
-            console.log(data)
+            //console.log(data)
             formSubmission(data)
             handleReset()
           }else {
-            console.log('form errors', errors)
+            //console.log('form errors', errors)
             setFormErrors(errors)
             
           }
@@ -414,7 +415,7 @@ const useStyles = makeStyles((theme) => ({
             <FileUpload getfileName={getfileName}/>
             </Grid>
             <Grid item xs={12} sm={12}>
-            <Button variant="contained" color="primary" onClick={handleSubmit} >Submit</Button>
+            <Button variant="contained" color="primary" onClick={handleSubmit} disabled={disable}>Submit</Button>
             </Grid>
             
     </Grid>
