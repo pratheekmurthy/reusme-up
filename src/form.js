@@ -150,9 +150,6 @@ const JobForm =(props)=>{
       if(reference.trim().length === 0){
         errors.reference = '* please select reference'
       }
-      if(jobcode.trim().length === 0){
-        errors.jobcode = '* please select job code'
-      }
     }
 
    
@@ -213,6 +210,7 @@ const JobForm =(props)=>{
     const handleSubmit = (e)=>{
       e.preventDefault()
         runValidations()
+        setRole(role.toUpperCase())
         if(Object.keys(errors).length === 0){
           setFormErrors({})
             const data ={
@@ -488,7 +486,7 @@ const useStyles = makeStyles((theme) => ({
             {formErrors.reference && <span  style={{color:'blue'}}>{formErrors.reference}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField id="outlined-basic" className={classes.TextField} label="Job Code" variant="outlined" value={jobcode} onChange={onChangeJobcode} required="true" fullWidth={true} error={formErrors.jobcode && <span>{formErrors.jobcode}</span>}/>  
+            <TextField id="outlined-basic" className={classes.TextField} label="Job Code" variant="outlined" value={jobcode} onChange={onChangeJobcode}  fullWidth={true} error={formErrors.jobcode && <span>{formErrors.jobcode}</span>}/>  
             </Grid>
             <Grid item xs={12} sm={12}>
             <FileUpload getfileName={getfileName}/>
