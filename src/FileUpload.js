@@ -4,6 +4,20 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { DropzoneDialog } from 'material-ui-dropzone';
 
 
+
+import { createMuiTheme } from '@material-ui/core/styles';
+import teal from '@material-ui/core/colors/teal';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: teal[400],
+    },
+    secondary: {
+      main: '#f44336',
+    },
+  },
+});
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -21,7 +35,7 @@ const FileUpload = (props) => {
       var formdata = new FormData();
       formdata.append("resume", files[0], `${files[0].name}`);
 
-      console.log("i am here")
+      
       
 
       var requestOptions = {
@@ -73,7 +87,7 @@ const FileUpload = (props) => {
       >
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           size="large"
           onClick={() => setOpen(true)}
         >

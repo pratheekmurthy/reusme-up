@@ -61,6 +61,7 @@ const JobForm =(props)=>{
     const [resume,setFileName] = useState("")
     const [formErrors, setFormErrors] = useState({})
     const [reference,setReference] = useState("")
+    const [jobcode,setJobCode] = useState("")
     const [disable,setDisable] = useState(true)
     const errors = {}
     const [open, setOpen] = React.useState(false);
@@ -72,8 +73,6 @@ const JobForm =(props)=>{
    
 
     //on Change functions
-
-
     const onChangefirstName =(e)=>setfirstName(e.target.value)
     const onChangelastName =(e)=>setlastName(e.target.value)
     const onChangeDOB =(e)=>setDob(e.target.value)
@@ -87,6 +86,7 @@ const JobForm =(props)=>{
     const onChangeEmail=(e) => setEmail(e.target.value)
     const onChangerole=(e)=> setRole(e.target.value)
     const onChangeReference=(e)=>setReference(e.target.value)
+    const onChangeJobcode=(e)=> setJobCode(e.target.value)
 
     const handleSnackbarClose = (event, reason) => {
       if (reason === 'clickaway') {
@@ -98,7 +98,7 @@ const JobForm =(props)=>{
     // array values for dropdowns
     const experience1 = [{name : 'Fresher' , value:"Fresher"},{name : '1 Year' , value:"1 Year"},{name : '2 Years' , value:"2 Year"},{name : '3 Years' , value:"3 Years"},{name : '4 Years' , value:"4 Years"},{name : '5 Years' , value:"5 Years"},{name : '6 Years' , value:"6 Years"},{name : '7 Years' , value:"7 Years"},{name : '8 Years' , value:"8 Years"},{name : '9 Years' , value:"9 Years"},{name : '10 Years' , value:"10 Years"},{name : '11 Years' , value:"11 Years"},{name : '12 Years' , value:"12 Years"},{name : '13 Years' , value:"13 Years"},{name : '14 Years' , value:"14 Years"},{name : '15 Years' , value:"15 Years"},{name : '16 Years' , value:"16 Years"},{name : '17 Years' , value:"17 Years"},{name : '18 Years' , value:"18 Years"},{name : '19 Years' , value:"19 Years"},{name : '20 Years' , value:"20 Years"},{name : '20+ Years' , value:"20+ Years"}]
     const backlogs1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
-    const joining1 = [{name : '<15 days' , value:"<15 days"},{name : 'One Month' , value:"One Month"},{name : 'Two Month' , value:"Two Month"}]
+    const joining1 = [{name : '<15 days' , value:"<15 days"},{name : 'One Month' , value:"One Month"},{name : 'Two Months' , value:"Two Months"}]
     const role1 = [{name : 'MERN Developer', value : 'MERN Developer'},{name : 'Manual Tester', value : 'Manual Tester'},{name : 'Automation Tester', value : 'Automation Tester'}]
     const reference1 = [{name : 'Facebook' ,value : 'facebook'},{name:'Linkedin',value:'Linkedin'},{name:'Reference',value:'Reference'},{name:'Others',value:'Others'}]
 
@@ -150,6 +150,9 @@ const JobForm =(props)=>{
       if(reference.trim().length === 0){
         errors.reference = '* please select reference'
       }
+      if(jobcode.trim().length === 0){
+        errors.jobcode = '* please select job code'
+      }
     }
 
    
@@ -169,6 +172,7 @@ const JobForm =(props)=>{
         setEmail("")
         setRole("")
         setReference("")
+        setJobCode("")
         setDisable(false)
     }
 
@@ -185,7 +189,7 @@ const JobForm =(props)=>{
 
     //form submission to server
     const formSubmission =(data)=>{
-        axios.post('http://192.168.3.45:3056/api/profiles',data)
+        axios.post('http://localhost:3056/api/profiles',data)
         .then((response)=>{
           setOpen(false);
           setSnackbarMessage({
@@ -226,7 +230,8 @@ const JobForm =(props)=>{
                 joining,
                 sourceIp,
                 resume,
-                reference
+                reference,
+                jobcode
 
 
             }
@@ -286,7 +291,7 @@ const useStyles = makeStyles((theme) => ({
           marginTop: theme.spacing(2),
           display : 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
         },
       },
   }));
@@ -303,7 +308,7 @@ const useStyles = makeStyles((theme) => ({
         <Card className={classes.card}>
         <CardHeader
                 title={
-                  `Please Provide Details`
+                  `We'd Like to Know A Little About You `
                 }
               />
         <CardContent > 
@@ -342,7 +347,7 @@ const useStyles = makeStyles((theme) => ({
             {formErrors.mobile && <span  style={{color:'blue'}}>{formErrors.mobile}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField id="outlined-basic" className={classes.TextField} label="Alternate mobile" variant="outlined" value={alternatemob} onChange={onChangeAlternate_Mob} required="true" fullWidth={true} error={formErrors.alternatemob && <span>{formErrors.alternatemob}</span>}/> 
+            <TextField id="outlined-basic" className={classes.TextField} label="Alternate Mobile" variant="outlined" value={alternatemob} onChange={onChangeAlternate_Mob} required="true" fullWidth={true} error={formErrors.alternatemob && <span>{formErrors.alternatemob}</span>}/> 
             {formErrors.alternatemob && <span  style={{color:'blue'}}>{formErrors.alternatemob}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
@@ -376,13 +381,13 @@ const useStyles = makeStyles((theme) => ({
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Backlogs" variant="outlined" value={backlogs} onChange={onChangebackloags} required="true" fullWidth/> */}
             <FormControl variant="outlined" className={classes.formControl} required="true"  fullWidth={true}  >
-            <InputLabel id="demo-simple-select-outlined-label">Backlog</InputLabel>
+            <InputLabel id="demo-simple-select-outlined-label">Backlog(s) If Any</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={backlogs}
                 onChange={onChangebackloags}
-                label="Backlogs"
+                label="Backlog(s) If Any"
                 required="true"
                 autoWidth ="false"
                 
@@ -405,14 +410,14 @@ const useStyles = makeStyles((theme) => ({
             </Grid>
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Backlogs" variant="outlined" value={backlogs} onChange={onChangebackloags} required="true" fullWidth/> */}
-            <FormControl variant="outlined" className={classes.formControl} required="true"  fullWidth={true}  >
-            <InputLabel id="demo-simple-select-outlined-label">Job Title</InputLabel>
+            {/* <FormControl variant="outlined" className={classes.formControl} required="true"  fullWidth={true}  >
+            <InputLabel id="demo-simple-select-outlined-label">Position Applied For</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={role}
                 onChange={onChangerole}
-                label="Job Title"
+                label="Position Applied For"
                 required="true"
                 autoWidth ="false"
                 
@@ -426,7 +431,9 @@ const useStyles = makeStyles((theme) => ({
                         })
                     }
                 </Select>
-            </FormControl>
+            </FormControl> */}
+            <TextField id="outlined-basic" className={classes.TextField} label="Position Applied For" variant="outlined" value={role} onChange={onChangerole} required="true" fullWidth={true} error={formErrors.jobcode && <span>{formErrors.jobcode}</span>}/>  
+
             {formErrors.role && <span  style={{color:'blue'}}>{formErrors.role}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
@@ -459,20 +466,17 @@ const useStyles = makeStyles((theme) => ({
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Joining" variant="outlined" value={joining} onChange={onChangejoining} required="true" fullWidth/>  */}
             <FormControl variant="outlined" className={classes.formControl} required="true" fullWidth={true}  >
-            <InputLabel id="demo-simple-select-outlined-label">Reference</InputLabel>
+            <InputLabel id="demo-simple-select-outlined-label">Source</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={reference}
                 onChange={onChangeReference}
-                label="Reference"
+                label="Source"
                 required="true"
                 >
                 <MenuItem value="">
                     <em>Select option</em>
-                  {/* < 15days
-                  1 month
-                  2 months */}
                 </MenuItem>
                     {
                         reference1.map((log)=>{
@@ -482,6 +486,9 @@ const useStyles = makeStyles((theme) => ({
                 </Select>
             </FormControl>
             {formErrors.reference && <span  style={{color:'blue'}}>{formErrors.reference}</span>}
+            </Grid>
+            <Grid item xs={6} sm={6}>
+            <TextField id="outlined-basic" className={classes.TextField} label="Job Code" variant="outlined" value={jobcode} onChange={onChangeJobcode} required="true" fullWidth={true} error={formErrors.jobcode && <span>{formErrors.jobcode}</span>}/>  
             </Grid>
             <Grid item xs={12} sm={12}>
             <FileUpload getfileName={getfileName}/>
