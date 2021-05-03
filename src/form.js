@@ -162,7 +162,7 @@ const JobForm =(props)=>{
 
     //form submission to server
     const formSubmission =(data)=>{
-        axios.post('http://192.168.3.45:3056/api/profiles',data)
+        axios.post('http://localhost:3056/api/profiles',data)
         .then((response)=>{
           alert("profile uploaded succesfully")
         })
