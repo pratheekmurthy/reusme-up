@@ -1,11 +1,12 @@
 import React,{useEffect, useState} from 'react'
 import {
     TextField,Grid,MenuItem,InputLabel,Select,
-    FormControl,makeStyles,Button,Card,CardContent,CardHeader,Typography,Link,Box} from '@material-ui/core'
+    FormControl,makeStyles,Button,Card,CardContent,CardHeader,Typography,Link,Box,Snackbar} from '@material-ui/core'
 import FileUpload from './FileUpload'
 import { createMuiTheme } from '@material-ui/core/styles';
 import Header from './Header'
 import validator from 'validator'
+import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios'
 // import DateFnsUtils from '@date-io/date-fns';
 // import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -37,6 +38,9 @@ theme.typography.h6 = {
   },
 };
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 const JobForm =(props)=>{
@@ -56,8 +60,15 @@ const JobForm =(props)=>{
     const [sourceIp,setIp] = useState("")
     const [resume,setFileName] = useState("")
     const [formErrors, setFormErrors] = useState({})
+    const [reference,setReference] = useState("")
     const [disable,setDisable] = useState(true)
     const errors = {}
+    const [open, setOpen] = React.useState(false);
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState({
+      severity: '',
+      message: ''
+    });
    
 
     //on Change functions
@@ -75,13 +86,21 @@ const JobForm =(props)=>{
     const onChangejoining =(e)=>setJoining(e.target.value)
     const onChangeEmail=(e) => setEmail(e.target.value)
     const onChangerole=(e)=> setRole(e.target.value)
+    const onChangeReference=(e)=>setReference(e.target.value)
 
+    const handleSnackbarClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setSnackbarOpen(false);
+    };
 
     // array values for dropdowns
-    const experience1 = [{name : 'Fresher' , value:"Fresher"},{name : '1 Year' , value:"1 Year"},{name : '2 Year' , value:"2 Year"},{name : '3 Years' , value:"3 Years"},{name : '4 Years' , value:"4 Years"},{name : '5 Years' , value:"5 Years"},{name : '6 Years' , value:"6 Years"},{name : '7 Years' , value:"7 Years"},{name : '8 Years' , value:"8 Years"},{name : '9 Years' , value:"9 Years"},{name : '10 Years' , value:"10 Years"},{name : '11 Years' , value:"11 Years"},{name : '12 Years' , value:"12 Years"},{name : '13 Years' , value:"13 Years"},{name : '14 Years' , value:"14 Years"},{name : '15 Years' , value:"15 Years"},{name : '16 Years' , value:"16 Years"},{name : '17 Years' , value:"17 Years"},{name : '18 Years' , value:"18 Years"},{name : '19 Years' , value:"19 Years"},{name : '20 Years' , value:"20 Years"},{name : '20+ Years' , value:"20+ Years"}]
+    const experience1 = [{name : 'Fresher' , value:"Fresher"},{name : '1 Year' , value:"1 Year"},{name : '2 Years' , value:"2 Year"},{name : '3 Years' , value:"3 Years"},{name : '4 Years' , value:"4 Years"},{name : '5 Years' , value:"5 Years"},{name : '6 Years' , value:"6 Years"},{name : '7 Years' , value:"7 Years"},{name : '8 Years' , value:"8 Years"},{name : '9 Years' , value:"9 Years"},{name : '10 Years' , value:"10 Years"},{name : '11 Years' , value:"11 Years"},{name : '12 Years' , value:"12 Years"},{name : '13 Years' , value:"13 Years"},{name : '14 Years' , value:"14 Years"},{name : '15 Years' , value:"15 Years"},{name : '16 Years' , value:"16 Years"},{name : '17 Years' , value:"17 Years"},{name : '18 Years' , value:"18 Years"},{name : '19 Years' , value:"19 Years"},{name : '20 Years' , value:"20 Years"},{name : '20+ Years' , value:"20+ Years"}]
     const backlogs1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
-    const joining1 = [{name : 'Yes' , value:"Yes"},{name : 'No' , value:"No"}]
+    const joining1 = [{name : '<15 days' , value:"<15 days"},{name : 'One Month' , value:"One Month"},{name : 'Two Month' , value:"Two Month"}]
     const role1 = [{name : 'MERN Developer', value : 'MERN Developer'},{name : 'Manual Tester', value : 'Manual Tester'},{name : 'Automation Tester', value : 'Automation Tester'}]
+    const reference1 = [{name : 'Facebook' ,value : 'facebook'},{name:'Linkedin',value:'Linkedin'},{name:'Reference',value:'Reference'},{name:'Others',value:'Others'}]
 
     const runValidations=()=>{
       if(firstName.trim().length === 0){
@@ -128,6 +147,9 @@ const JobForm =(props)=>{
       if(role.trim().length === 0){
         errors.role = '* please select role'
       }
+      if(reference.trim().length === 0){
+        errors.reference = '* please select reference'
+      }
     }
 
    
@@ -146,6 +168,7 @@ const JobForm =(props)=>{
         setJoining("")
         setEmail("")
         setRole("")
+        setReference("")
         setDisable(false)
     }
 
@@ -162,9 +185,14 @@ const JobForm =(props)=>{
 
     //form submission to server
     const formSubmission =(data)=>{
-        axios.post('http://localhost:3056/api/profiles',data)
+        axios.post('http://192.168.3.45:3056/api/profiles',data)
         .then((response)=>{
-          alert("profile uploaded succesfully")
+          setOpen(false);
+          setSnackbarMessage({
+            severity: 'success',
+            message: 'Profile Submitted Successfully !'
+          });
+          setSnackbarOpen(true);
         })
         .catch((error)=>{
           alert(error.message)
@@ -197,11 +225,12 @@ const JobForm =(props)=>{
                 ctc,
                 joining,
                 sourceIp,
-                resume
+                resume,
+                reference
 
 
             }
-            //console.log(data)
+            // console.log(data)
             formSubmission(data)
             handleReset()
           }else {
@@ -292,8 +321,21 @@ const useStyles = makeStyles((theme) => ({
             {formErrors.email && <span style={{color:'blue'}}> { formErrors.email } </span>}<br />
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField id="outlined-basic" label="DOB" variant="outlined" value={Dob} onChange={onChangeDOB} required="true" fullWidth={true} error={formErrors.Dob && <span>{formErrors.Dob}</span>}/>
-            {formErrors.Dob && <span  style={{color:'blue'}}>{formErrors.Dob}</span>}
+            <TextField
+                  id="outlined-basic"
+                  label="DOB"
+                  type="date"
+                  variant="outlined"
+                  value = {Dob}
+                  onChange={onChangeDOB}
+                  //defaultValue="2017-05-24"
+                  className={classes.textField}
+                  fullWidth={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}/>
+            {/* <TextField id="outlined-basic" label="DOB" variant="outlined" value={Dob} onChange={onChangeDOB} required="true" fullWidth={true} error={formErrors.Dob && <span>{formErrors.Dob}</span>}/>
+            {formErrors.Dob && <span  style={{color:'blue'}}>{formErrors.Dob}</span>} */}
             </Grid>
             <Grid item xs={6} sm={6}>
             <TextField id="outlined-basic" label="Mobile Number" variant="outlined" value={mobile} onChange={onChangemobile} required="true" fullWidth={true} error={formErrors.mobile && <span>{formErrors.mobile}</span>}/>
@@ -358,19 +400,19 @@ const useStyles = makeStyles((theme) => ({
             {formErrors.backlogs && <span  style={{color:'blue'}}>{formErrors.backlogs}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField id="outlined-basic" label="Current CTC" variant="outlined" value={ctc} onChange={onChangeCTC} required="true" fullWidth={true}  error={formErrors.ctc && <span>{formErrors.ctc}</span>}/><br/>
+            <TextField id="outlined-basic" label="Annual CTC" variant="outlined" value={ctc} onChange={onChangeCTC} required="true" fullWidth={true}  error={formErrors.ctc && <span>{formErrors.ctc}</span>}/><br/>
             {formErrors.ctc && <span  style={{color:'blue'}}>{formErrors.ctc}</span>}
             </Grid>
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Backlogs" variant="outlined" value={backlogs} onChange={onChangebackloags} required="true" fullWidth/> */}
             <FormControl variant="outlined" className={classes.formControl} required="true"  fullWidth={true}  >
-            <InputLabel id="demo-simple-select-outlined-label">Role</InputLabel>
+            <InputLabel id="demo-simple-select-outlined-label">Job Title</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={role}
                 onChange={onChangerole}
-                label="Role"
+                label="Job Title"
                 required="true"
                 autoWidth ="false"
                 
@@ -390,17 +432,20 @@ const useStyles = makeStyles((theme) => ({
             <Grid item xs={6} sm={6}>
             {/* <TextField id="outlined-basic" label="Joining" variant="outlined" value={joining} onChange={onChangejoining} required="true" fullWidth/>  */}
             <FormControl variant="outlined" className={classes.formControl} required="true" fullWidth={true}  >
-            <InputLabel id="demo-simple-select-outlined-label">Immediate Joiner</InputLabel>
+            <InputLabel id="demo-simple-select-outlined-label">Notice Period</InputLabel>
                 <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={joining}
                 onChange={onChangejoining}
-                label="Immediate Joiner"
+                label="Notice Period"
                 required="true"
                 >
                 <MenuItem value="">
                     <em>Select option</em>
+                  {/* < 15days
+                  1 month
+                  2 months */}
                 </MenuItem>
                     {
                         joining1.map((log)=>{
@@ -410,6 +455,33 @@ const useStyles = makeStyles((theme) => ({
                 </Select>
             </FormControl>
             {formErrors.joining && <span  style={{color:'blue'}}>{formErrors.joining}</span>}
+            </Grid>
+            <Grid item xs={6} sm={6}>
+            {/* <TextField id="outlined-basic" label="Joining" variant="outlined" value={joining} onChange={onChangejoining} required="true" fullWidth/>  */}
+            <FormControl variant="outlined" className={classes.formControl} required="true" fullWidth={true}  >
+            <InputLabel id="demo-simple-select-outlined-label">Reference</InputLabel>
+                <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={reference}
+                onChange={onChangeReference}
+                label="Reference"
+                required="true"
+                >
+                <MenuItem value="">
+                    <em>Select option</em>
+                  {/* < 15days
+                  1 month
+                  2 months */}
+                </MenuItem>
+                    {
+                        reference1.map((log)=>{
+                            return( <MenuItem value={log.value}>{log.name}</MenuItem>)
+                        })
+                    }
+                </Select>
+            </FormControl>
+            {formErrors.reference && <span  style={{color:'blue'}}>{formErrors.reference}</span>}
             </Grid>
             <Grid item xs={12} sm={12}>
             <FileUpload getfileName={getfileName}/>
@@ -423,6 +495,19 @@ const useStyles = makeStyles((theme) => ({
     </Card>
     </Grid>
     <Grid item xs={4} sm={4}></Grid>
+    <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          style={{ width: '100%' }}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={snackbarMessage.severity}
+          >
+            {snackbarMessage.message}
+          </Alert>
+        </Snackbar>
     </Grid>
     <Box mt={5}>
               <Copyright />

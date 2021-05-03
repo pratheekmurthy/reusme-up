@@ -20,6 +20,8 @@ const FileUpload = (props) => {
   function uploadFile(files) {
       var formdata = new FormData();
       formdata.append("resume", files[0], `${files[0].name}`);
+
+      console.log("i am here")
       
 
       var requestOptions = {
@@ -28,7 +30,7 @@ const FileUpload = (props) => {
         redirect: 'follow'
       };
 
-      fetch("http://192.168.3.45:3056/hr-profiles/resume", requestOptions)
+      fetch("http://localhost:3056/hr-profiles/resume", requestOptions)
         .then(response => {
           getfileName(response.url,files)
           setOpen(false);
